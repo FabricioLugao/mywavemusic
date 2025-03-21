@@ -1,6 +1,34 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
 import artists from "../mock/albums";
+import styled from "styled-components";
+
+const ArtistContainer = styled.div`
+  padding: 20px;
+`;
+
+const ArtistTitle = styled.h1`
+  font-size: 2em;
+  margin-bottom: 10px;
+`;
+
+const AlbumList = styled.ul`
+  list-style-type: none;
+  padding: 0;
+`;
+
+const AlbumItem = styled.li`
+  margin-bottom: 5px;
+`;
+
+const AlbumLink = styled(Link)`
+  text-decoration: none;
+  color: blue;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
 function ArtistPage() {
   const { artist } = useParams();
@@ -11,17 +39,19 @@ function ArtistPage() {
   }
 
   return (
-    <div>
-      <h1>{artistData.artist}</h1>
+    <ArtistContainer>
+      <ArtistTitle>{artistData.artist}</ArtistTitle>
       <h2>Álbuns:</h2>
-      <ul>
+      <AlbumList>
         {artistData.albums.map((album) => (
-          <li key={album["slug-album"]}>
-            <Link to={`/${artist}/${album["slug-album"]}`}>{album.album}</Link>
-          </li>
+          <AlbumItem key={album["slug-album"]}>
+            <AlbumLink to={`/${artist}/${album["slug-album"]}`}>
+              {album.album}
+            </AlbumLink>
+          </AlbumItem>
         ))}
-      </ul>
-    </div>
+      </AlbumList>
+    </ArtistContainer>
   );
 }
 
