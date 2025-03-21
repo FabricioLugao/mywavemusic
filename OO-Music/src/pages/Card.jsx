@@ -15,16 +15,23 @@ export default function Card() {
   const artist = queryParams.get("artist");
   const album = queryParams.get("album");
 
-  const baseUrl = process.env.REACT_APP_URL;
+  const baseUrl = window.location.origin;
   const albumUrl = `${baseUrl}/${artist}/${album}`;
 
   useEffect(() => {
     new QRious({
       element: qrRef.current,
       value: albumUrl,
-      size: 150,
+      size: 170,
     });
   }, [albumUrl]);
+
+  useEffect(() => {
+    document.body.classList.add("card-page");
+    return () => {
+      document.body.classList.remove("card-page");
+    };
+  }, []);
 
   return (
     <div className="card-container">

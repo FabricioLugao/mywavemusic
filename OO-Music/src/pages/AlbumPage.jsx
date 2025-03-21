@@ -40,6 +40,17 @@ const StreamLink = styled.a`
   }
 `;
 
+const ShareLink = styled.a`
+  text-decoration: none;
+  color: blue;
+  display: block;
+  margin-top: 20px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 function AlbumPage() {
   const { artist, album } = useParams();
   const artistData = artists.find((item) => item["slug-artist"] === artist);
@@ -50,6 +61,8 @@ function AlbumPage() {
   if (!artistData || !albumData) {
     return <div>Álbum não encontrado</div>;
   }
+
+  const shareUrl = `/card?artist=${artist}&album=${album}`;
 
   return (
     <AlbumContainer>
@@ -71,6 +84,10 @@ function AlbumPage() {
           </StreamItem>
         ))}
       </StreamList>
+      <h3>Compartilhar:</h3>
+      <ShareLink target="_blank" href={shareUrl}>
+        Compartilhar este álbum
+      </ShareLink>
     </AlbumContainer>
   );
 }
