@@ -83,7 +83,7 @@ body.card-page {
     flex-direction: column;
 }
 
-.card-back {
+.card-back p {
     margin-bottom: 0;
 }
 

@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
-import abbeyRoad from "../assets/abbeyroad.webp"; // Imagem na pasta public
 import QRious from "qrious";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSyncAlt } from "@fortawesome/free-solid-svg-icons";
 import { useLocation } from "react-router-dom";
 import "./Card.css";
 
+// Importa todas as imagens da pasta assets
+const images = import.meta.glob("../assets/*.jpg");
+
 export default function Card() {
   const [flipped, setFlipped] = useState(false);
+  const [albumImage, setAlbumImage] = useState(null);
   const qrRef = useRef(null);
   const location = useLocation();
 
@@ -17,6 +20,18 @@ export default function Card() {
 
   const baseUrl = window.location.origin;
   const albumUrl = `${baseUrl}/${artist}/${album}`;
+
+  // Carrega a imagem correspondente ao álbum
+  useEffect(() => {
+    const loadImage = async () => {
+      const imagePath = images[`../assets/${album}.jpg`];
+      if (imagePath) {
+        const imageModule = await imagePath();
+        setAlbumImage(imageModule.default);
+      }
+    };
+    loadImage();
+  }, [album]);
 
   useEffect(() => {
     new QRious({
@@ -40,7 +55,7 @@ export default function Card() {
         onClick={() => setFlipped(!flipped)}
       >
         <div className="card-front">
-          <img src={abbeyRoad} alt="Abbey Road" />
+          {albumImage && <img src={albumImage} alt={album} />}
           <FontAwesomeIcon icon={faSyncAlt} className="flip-icon" />
         </div>
         <div className="card-back">
